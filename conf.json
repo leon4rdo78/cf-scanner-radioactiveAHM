@@ -42,7 +42,7 @@
 			"Enable": true,
 			"Fingerprint": "chrome",
 			"TcpTimeout": 1000,
-			"TcpRetry": 1
+			"TcpConnectAttempt": 1
 		}
 	},
 	"HTTP/3": false,

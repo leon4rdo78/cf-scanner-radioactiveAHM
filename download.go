@@ -28,12 +28,7 @@ func downloadTest(preclient *http.Client, conf *Conf, ip string, localIP net.IP,
 				client = h3transporter(
 					conf,
 					&conf.DownloadTest.SNI,
-					&quic.Config{
-						InitialStreamReceiveWindow:     1024 * 1024 * 8,
-						MaxStreamReceiveWindow:         1024 * 1024 * 16,
-						InitialConnectionReceiveWindow: 1024 * 1024 * 32,
-						MaxConnectionReceiveWindow:     1024 * 1024 * 64,
-					},
+					&quic.Config{},
 				)
 			} else {
 				if conf.TLS.Utls.Enable {

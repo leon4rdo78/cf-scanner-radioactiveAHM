@@ -11,7 +11,7 @@
  "Hostname": "{ip}",
  "Ports": [],
  "Path": "/",
- "Headers": {"User-Agent": ["Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:150.0) Gecko/20100101 Firefox/150.0"]},
+ "Headers": {"User-Agent": ["Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0"]},
  "ResponseHeader": {},
  "ResponseStatusCode": [400],
  "Padding": true,
@@ -23,7 +23,6 @@
   "Size": "24-65"
  },
  "Goroutines": 8,
- "Scans": 6000,
  "Maxlatency": 20000,
  "Jitter": {
   "Enable": false,
@@ -44,7 +43,7 @@
    "Enable": true,
    "Fingerprint": "chrome",
    "TcpTimeout": 1000,
-   "TcpRetry": 1
+   "TcpConnectAttempt": 1
   }
  },
  "HTTP/3": false,

@@ -62,10 +62,10 @@ type DownloadConfig struct {
 }
 
 type UtlsConfig struct {
-	Enable      bool   `json:"Enable"`
-	Fingerprint string `json:"Fingerprint"`
-	TcpTimeout  int64  `json:"TcpTimeout"`
-	TcpRetry    int    `json:"TcpRetry"`
+	Enable            bool   `json:"Enable"`
+	Fingerprint       string `json:"Fingerprint"`
+	TcpTimeout        int64  `json:"TcpTimeout"`
+	TcpConnectAttempt int    `json:"TcpConnectAttempt"`
 }
 
 type TLSConfig struct {
@@ -215,7 +215,6 @@ func main() {
 	defer file.Close()
 
 	LOG := conf.LogErr
-	color.Green("【ＨＴＴＰ Ｓｃａｎ】\n")
 	if !conf.DomainScan.Enable {
 		ip_ch := make(chan string, conf.Goroutines)
 		var wg sync.WaitGroup
@@ -678,7 +677,7 @@ func utlsTransporter(conf *Conf, fingerprint utls.ClientHelloID, sni string, add
 
 	var dialConn net.Conn
 	var err error
-	for reconnect := range conf.TLS.Utls.TcpRetry {
+	for reconnect := range conf.TLS.Utls.TcpConnectAttempt {
 		dialConn, err = dialer.Dial("tcp", addr)
 		if err != nil {
 			if !errors.Is(err, context.DeadlineExceeded) {
@@ -688,7 +687,7 @@ func utlsTransporter(conf *Conf, fingerprint utls.ClientHelloID, sni string, add
 			break
 		}
 
-		if reconnect+1 == conf.TLS.Utls.TcpRetry {
+		if reconnect+1 == conf.TLS.Utls.TcpConnectAttempt {
 			return nil, err
 		}
 	}
@@ -713,22 +712,20 @@ func utlsTransporter(conf *Conf, fingerprint utls.ClientHelloID, sni string, add
 	}
 
 	if uTlsConn.ConnectionState().NegotiatedProtocol == "h2" {
-		h2 := http2.Transport{
-			DialTLSContext: func(_ context.Context, _, _ string, _ *tls.Config) (net.Conn, error) {
-				return uTlsConn, nil
-			},
-		}
 		return &http.Client{
-			Transport: &h2,
+			Transport: &http2.Transport{
+				DialTLSContext: func(_ context.Context, _, _ string, _ *tls.Config) (net.Conn, error) {
+					return uTlsConn, nil
+				},
+			},
 		}, nil
 	} else {
-		h1 := http.Transport{
-			DialTLSContext: func(_ context.Context, _, _ string) (net.Conn, error) {
-				return uTlsConn, nil
-			},
-		}
 		return &http.Client{
-			Transport: &h1,
+			Transport: &http.Transport{
+				DialTLSContext: func(_ context.Context, _, _ string) (net.Conn, error) {
+					return uTlsConn, nil
+				},
+			},
 		}, nil
 	}
 }

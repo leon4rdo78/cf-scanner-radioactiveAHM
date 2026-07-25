@@ -122,7 +122,7 @@ go build -ldflags "-w -s"
     "Enable": true, // Enable UTLS fingerprint.
     "Fingerprint": "chrome", // Supported fingerprints are firefox, edge, chrome, 360 and ios.
     "TcpTimeout": 1000,
-    "TcpRetry": 1
+    "TcpConnectAttempt": 1
    }
  },
  "HTTP/3": false, // Enable HTTP version 3.
