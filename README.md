@@ -10,9 +10,6 @@ Cloudflare scanner
 
 **This scanner can be used with any CDN, provided you have the necessary requirements, such as an IP list or domain list for scanning. By default, it is configured to target Cloudflare. [Please review the JSON configuration document below.](#configuration-parameters)**
 
-> [!CAUTION]
-> Need help to update `cloudfalare-domains.txt`.
-
 ## IRAN
 
 [اسکن akamai برای سایفون](/Akamai.md)
